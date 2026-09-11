@@ -680,9 +680,9 @@
             gap: 15px;
             background: rgba(0, 243, 255, 0.05);
             border: 1px solid rgba(0, 243, 255, 0.2);
-            padding: 8px 18px;
+            padding: 10px 22px;
             border-radius: 30px;
-            font-size: 0.88rem;
+            font-size: 0.9rem;
             color: var(--text-main);
             flex-wrap: wrap;
             justify-content: center;
@@ -691,13 +691,17 @@
         .footer-contact a {
             color: var(--neon-cyan);
             text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s ease, text-shadow 0.3s ease;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .footer-contact a:hover {
             color: #ffffff;
-            text-shadow: 0 0 10px var(--neon-cyan);
+            text-shadow: 0 0 12px var(--neon-cyan);
+            transform: translateY(-1px);
         }
 
         /* PAYMENT MODAL OVERLAY STYLES */
@@ -881,7 +885,7 @@
                     <span>Mit <strong>PayPal</strong> bezahlen & Freischalten</span>
                 </a>
 
-                <!-- MANUELLE BEATÄTIGUNG -->
+                <!-- MANUELLE BESTÄTIGUNG -->
                 <button onclick="unlockContentManually()" class="manual-unlock-btn">
                     Ich habe bereits gespendet / Portal freischalten
                 </button>
@@ -1037,8 +1041,9 @@
                 Alle Inhalte sind urheberrechtlich geschützt. Unbefugte Vervielfältigung, Verbreitung oder kommerzielle Nutzung ist ausdrücklich untersagt.
             </div>
             <div class="footer-contact">
-                <span>💬 WhatsApp Support</span>
-                <span>✉️ E-Mail Support</span>
+                <a href="https://chat.whatsapp.com/Kisnv5LGuvj4WrKadqo98B?mode=gi_t" target="_blank" rel="noopener noreferrer">
+                    💬 WhatsApp Support Gruppe beitreten
+                </a>
             </div>
         </footer>
 
