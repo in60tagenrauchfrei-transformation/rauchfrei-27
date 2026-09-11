@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>21-Tage Transformation | Rauchfrei-Programm</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Orbitron:wght@600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #060911;
+            --card-bg: rgba(13, 22, 38, 0.7);
+            --card-border: rgba(0, 243, 255, 0.18);
+            --neon-cyan: #00f3ff;
+            --cyan-glow: rgba(0, 243, 255, 0.4);
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --text-white: #ffffff;
+            --success-green: #00ff88;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.7;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(0, 243, 255, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 85% 60%, rgba(0, 150, 255, 0.08) 0%, transparent 50%),
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .glow-orb {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: var(--neon-cyan);
+            filter: blur(120px);
+            opacity: 0.15;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .orb-1 { top: 10%; left: -100px; }
+        .orb-2 { top: 60%; right: -100px; background: #0077ff; }
+
+        /* STATUS BAR */
+        .status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 12px 20px;
+            background: rgba(10, 16, 28, 0.8);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .tag {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--neon-cyan);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--neon-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon-cyan);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 243, 255, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(0, 243, 255, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 243, 255, 0); }
+        }
+
+        .program-phase {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        /* HEADER */
+        .header-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header-title h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-white);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+        }
+
+        .header-title h1 span {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 15px var(--cyan-glow);
+        }
+
+        .header-title p.subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px 32px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--neon-cyan), transparent);
+        }
+
+        .card.completed {
+            border-color: rgba(0, 255, 136, 0.4);
+        }
+
+        .card.completed::before {
+            background: linear-gradient(180deg, var(--success-green), transparent);
+        }
+
+        .intro-card {
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.08) 0%, rgba(13, 22, 38, 0.9) 100%);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            padding: 32px;
+        }
+
+        .intro-card h2, .card h3 {
+            font-size: 1.4rem;
+            color: var(--neon-cyan);
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .quote-box {
+            font-style: italic;
+            border-left: 3px solid var(--neon-cyan);
+            padding: 12px 20px;
+            background: rgba(0, 243, 255, 0.05);
+            margin: 20px 0;
+            color: #fff;
+        }
+
+        .quote-author {
+            display: block;
+            margin-top: 8px;
+            font-style: normal;
+            font-weight: 700;
+            color: var(--neon-cyan);
+        }
+
+        .highlight-box {
+            background: rgba(0, 243, 255, 0.05);
+            border-left: 3px solid var(--neon-cyan);
+            padding: 16px 20px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+            font-weight: 600;
+            color: var(--text-white);
+        }
+
+        .highlight-box span.bold-cyan {
+            color: var(--neon-cyan);
+            font-size: 1.1rem;
+            display: block;
+            margin-top: 6px;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+
+        .neuro-box {
+            background: rgba(6, 12, 24, 0.8);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin: 18px 0;
+        }
+
+        .neuro-box h5 {
+            color: var(--neon-cyan);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.05rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-box {
+            background: rgba(0, 255, 136, 0.05);
+            border-left: 3px solid var(--success-green);
+            padding: 16px 20px;
+            margin-top: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .action-box h5 {
+            color: var(--success-green);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .kickstart-box {
+            background: rgba(0, 195, 255, 0.08);
+            border-left: 3px solid #00c3ff;
+            padding: 16px 20px;
+            margin-top: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .kickstart-box h5 {
+            color: #00c3ff;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid var(--neon-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+            flex-shrink: 0;
+        }
+
+        .story-p {
+            font-size: 1.05rem;
+            color: #cbd5e1;
+            margin-bottom: 14px;
+        }
+
+        .facts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .fact-item {
+            background: rgba(6, 12, 24, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 16px 20px;
+        }
+
+        .fact-item h4 {
+            color: var(--neon-cyan);
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+
+        /* LAUNCH LIST */
+        .launch-steps {
+            list-style: none;
+            counter-reset: launch-counter;
+            margin-top: 15px;
+        }
+
+        .launch-steps li {
+            counter-increment: launch-counter;
+            position: relative;
+            padding-left: 45px;
+            margin-bottom: 20px;
+        }
+
+        .launch-steps li::before {
+            content: counter(launch-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+        }
+
+        .launch-steps h4 {
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        /* PROGRESS SECTION */
+        .progress-sticky {
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            background: rgba(6, 9, 17, 0.95);
+            border: 1px solid var(--neon-cyan);
+            border-radius: 16px;
+            padding: 20px 25px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.2);
+        }
+
+        .progress-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--success-green));
+            box-shadow: 0 0 15px var(--neon-cyan);
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ACCORDION DAY HEADER STYLES */
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            padding: 8px 0;
+            transition: color 0.2s ease;
+        }
+
+        .day-header:hover .day-title-preview {
+            color: var(--neon-cyan);
+        }
+
+        .day-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .day-badge {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--neon-cyan);
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .day-title-preview {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+
+        .day-header-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .phase-tag {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-family: 'Rajdhani', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .chevron-icon {
+            font-size: 1.1rem;
+            color: var(--neon-cyan);
+            transition: transform 0.3s ease;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 243, 255, 0.1);
+            border-radius: 50%;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+        }
+
+        .card.open .chevron-icon {
+            transform: rotate(180deg);
+            background: var(--neon-cyan);
+            color: #040914;
+        }
+
+        /* COLLAPSIBLE DAY CONTENT */
+        .day-content {
+            display: none;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 15px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .card.open .day-content {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* QUIZ BOX */
+        .quiz-box {
+            background: rgba(10, 20, 38, 0.9);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .quiz-title {
+            color: var(--neon-cyan);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quiz-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-btn:hover {
+            border-color: var(--neon-cyan);
+            background: rgba(0, 243, 255, 0.1);
+        }
+
+        .quiz-btn.correct {
+            background: rgba(0, 255, 136, 0.2) !important;
+            border-color: var(--success-green) !important;
+            color: var(--success-green) !important;
+        }
+
+        .quiz-btn.wrong {
+            background: rgba(255, 68, 68, 0.2) !important;
+            border-color: #ff4444 !important;
+            color: #ff6666 !important;
+        }
+
+        .btn-complete {
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-complete:hover {
+            background: var(--neon-cyan);
+            color: #040914;
+            box-shadow: 0 0 20px var(--neon-cyan);
+        }
+
+        .btn-complete.is-done {
+            background: var(--success-green);
+            border-color: var(--success-green);
+            color: #040914;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+        }
+
+        .cta-card {
+            text-align: center;
+            background: linear-gradient(180deg, rgba(13, 22, 38, 0.9) 0%, rgba(5, 15, 30, 0.95) 100%);
+            border: 1px solid var(--neon-cyan);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.15);
+            padding: 40px 30px;
+        }
+
+        .btn-switch {
+            background: linear-gradient(90deg, #00d2ff 0%, #00f3ff 100%);
+            color: #040914;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 800;
+            padding: 18px 42px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.5);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-switch:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.8);
+        }
+
+        .btn-switch.active {
+            background: linear-gradient(90deg, #00ff88 0%, #00f3ff 100%);
+            box-shadow: 0 0 50px rgba(0, 255, 136, 0.8);
+        }
+
+        .status-msg {
+            font-size: 0.95rem;
+            color: var(--neon-cyan);
+            font-weight: 600;
+            margin-top: 15px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .status-msg.show { opacity: 1; }
+
+        /* FOOTER STYLES */
+        .footer {
+            margin-top: 60px;
+            padding: 40px 20px 30px 20px;
+            text-align: center;
+            border-top: 1px solid var(--card-border);
+            background: linear-gradient(180deg, rgba(6, 9, 17, 0) 0%, rgba(10, 16, 28, 0.85) 100%);
+            border-radius: 16px 16px 0 0;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-quote {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--neon-cyan);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px var(--cyan-glow);
+            margin-bottom: 20px;
+        }
+
+        .footer-copyright {
+            font-size: 0.95rem;
+            color: var(--text-white);
+            line-height: 1.6;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .footer-copyright span.author {
+            color: var(--neon-cyan);
+        }
+
+        .footer-legal {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto 20px auto;
+            line-height: 1.5;
+        }
+
+        .footer-contact {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0, 243, 255, 0.05);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.88rem;
+            color: var(--text-main);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-contact a {
+            color: var(--neon-cyan);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .footer-contact a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        /* PAYMENT MODAL OVERLAY STYLES */
+        .payment-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 7, 18, 0.92);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 15px;
+        }
+
+        .payment-modal {
+            background: var(--card-bg);
+            border: 1px solid var(--neon-cyan);
+            box-shadow: 0 0 40px var(--cyan-glow);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 480px;
+            width: 100%;
+            position: relative;
+            color: #fff;
+            text-align: center;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close:hover { color: var(--neon-cyan); }
+
+        .payment-modal h2 {
+            font-family: 'Orbitron', sans-serif;
+            margin: 15px 0 10px;
+            font-size: 1.5rem;
+            color: var(--neon-cyan);
+        }
+
+        .modal-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .slider-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px 15px;
+            margin-bottom: 25px;
+        }
+
+        .amount-display {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--cyan-glow);
+            margin-bottom: 10px;
+        }
+
+        .neon-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            margin: 15px 0;
+        }
+
+        .neon-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--neon-cyan);
+            box-shadow: 0 0 10px var(--neon-cyan);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .neon-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+        .thank-msg {
+            font-size: 0.85rem;
+            color: var(--success-green);
+            font-weight: 600;
+        }
+
+        .paypal-direct-btn {
+            display: block;
+            width: 100%;
+            background: #ffc439;
+            color: #000;
+            text-decoration: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            transition: filter 0.2s, transform 0.2s;
+            font-weight: 700;
+        }
+        .paypal-direct-btn:hover { 
+            filter: brightness(1.05);
+            transform: translateY(-2px);
+        }
+
+        .manual-unlock-btn {
+            background: transparent;
+            border: 1px solid rgba(0, 243, 255, 0.4);
+            color: var(--neon-cyan);
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin-top: 15px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            width: 100%;
+            transition: all 0.2s ease;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .manual-unlock-btn:hover {
+            background: rgba(0, 243, 255, 0.1);
+            border-color: var(--neon-cyan);
+        }
+
+        .badge {
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-family: 'Rajdhani', sans-serif;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .facts-grid { grid-template-columns: 1fr; }
+            .header-title h1 { font-size: 1.8rem; }
+            .day-header-left { flex-direction: column; align-items: flex-start !important; gap: 4px !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PAYMENT MODAL OVERLAY -->
+    <div id="paymentModal" class="payment-modal-overlay">
+        <div class="payment-modal">
+            <button class="modal-close" onclick="closePaymentModal()">&times;</button>
+            
+            <span class="badge">FREIWILLIGER BEITRAG</span>
+            <h2>Unterstütze das Projekt</h2>
+            <p class="modal-desc">
+                Mit deinem Beitrag hilfst du dabei, die Serverkosten zu decken und das 21-Tage-Rauchfrei-Portal frei von Werbeeinblendungen zu halten.
+            </p>
+
+            <!-- SLIDER BEREICH -->
+            <div class="slider-box">
+                <div class="amount-display" id="amountDisplay">5,00 €</div>
+                <input type="range" min="1" max="50" value="5" step="0.50" id="paymentRange" class="neon-slider" oninput="updateAmount(this.value)">
+                <div class="thank-msg" id="thankMsg">Danke für deine Unterstützung! 🚀</div>
+            </div>
+
+            <div class="payment-methods">
+                <span class="block-label" style="margin-bottom: 10px; display: block; font-size: 0.85rem; color: var(--text-muted);">Wähle eine Zahlungsmethode:</span>
+                
+                <!-- DIRECT PAYPAL BUTTON -->
+                <a id="directPaypalBtn" href="#" target="_blank" class="paypal-direct-btn" onclick="onPaypalClick()">
+                    <span>Mit <strong>PayPal</strong> bezahlen & Freischalten</span>
+                </a>
+
+                <!-- MANUELLE BEATÄTIGUNG -->
+                <button onclick="unlockContentManually()" class="manual-unlock-btn">
+                    Ich habe bereits gespendet / Portal freischalten
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BACKGROUND GLOW ORBS -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+
+    <!-- MAIN PORTAL CONTAINER -->
+    <div class="container">
+        
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="tag"><span class="pulse-dot"></span> System Status: Active</div>
+            <div class="program-phase">21-TAGE TRANSFORMATION</div>
+        </div>
+
+        <!-- Main Header -->
+        <header class="header-title">
+            <h1>21-Tage <span>Transformation</span></h1>
+            <p class="subtitle">Dein neuer Weg in ein rauchfreies, gesundes &amp; kraftvolles Leben</p>
+        </header>
+
+        <!-- Welcome Card -->
+        <div class="card intro-card">
+            <h2>✨ Kein Coaching – Eine Ganzheitliche Transformation</h2>
+            <p>Hier gibt es keinen Zufall. Es ist alles verständlich, Seite für Seite klar definiert und strukturiert aufgebaut.</p>
+            <div class="highlight-box">
+                Wir gehen gemeinsam rein ins Labyrinth – und gemeinsam finden wir deinen Ausgang.
+                <span class="bold-cyan">⚡ Nie wieder zur Zigarette greifen.</span>
+            </div>
+        </div>
+
+        <!-- Miracle Body Card -->
+        <div class="card">
+            <div class="section-header">
+                <div class="icon-wrapper">🧬</div>
+                <h3>Das Wunder in dir selbst</h3>
+            </div>
+            <p class="story-p">Viele von uns suchen ihr ganzes Leben lang nach einem großen Wunder oder einer höheren Macht. Wir schauen nach oben zum Himmel oder suchend in die Ferne.</p>
+            <p class="story-p">Aber wir denken viel zu selten darüber nach, was für ein unglaubliches Wunder wir schon immer ganz nah bei uns tragen: <strong>unseren eigenen Körper.</strong></p>
+
+            <div class="facts-grid">
+                <div class="fact-item">
+                    <h4>🩸 Das Wunder der Heilung</h4>
+                    <p>Wenn du dir in den Finger schneidest, bleibt die Wunde nicht offen. Nach 1–2 Tagen bildet sich eine Kruste, und bald ist sie spurlos verschwunden. Ganz von alleine.</p>
+                </div>
+                <div class="fact-item">
+                    <h4>🛡️ Unermüdlicher Beschützer</h4>
+                    <p>Ob du wach bist oder schläfst: Dein Körper arbeitet rund um die Uhr. Er reinigt sich selbst, repariert Schäden und baut deine Kraft stetig wieder auf.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mindset Card -->
+        <div class="card">
+            <div class="section-header">
+                <div class="icon-wrapper">🧠</div>
+                <h3>Dein Mindset-Shift: Optimiere deine Wahrnehmung</h3>
+            </div>
+            <p class="story-p">Deine Transformation beginnt im Kopf. Wie du Dinge bewertest, entscheidet darüber, wie leicht dir dieser Weg fällt:</p>
+
+            <div class="facts-grid">
+                <div class="fact-item">
+                    <h4>1. Es gibt keine Probleme</h4>
+                    <p>Es passieren einfach Dinge in deiner Welt.</p>
+                </div>
+                <div class="fact-item">
+                    <h4>2. Erwartungen sind die Falle</h4>
+                    <p>Wenn du glaubst, dass immer alles perfekt laufen muss, wirst du schnell enttäuscht.</p>
+                </div>
+                <div class="fact-item">
+                    <h4>3. Blockiere dich nicht selbst</h4>
+                    <p>Wer nur das Schlechte sieht, übersieht die Chancen.</p>
+                </div>
+                <div class="fact-item">
+                    <h4>4. Lebe im Jetzt</h4>
+                    <p>Was zählt, ist der Moment. Verändere deine Sichtweise und du verändere deine Welt.</p>
+                </div>
+            </div>
+
+            <div class="quote-box">
+                „Du bist die Macht hinter deinen Gedanken – nimm das Steuer in die Hand! Jeder Moment ist deine Wahl: Lass Chaos nicht regieren, sondern verwandle es in deine Stärke. Feiere jeden Schritt – denn selbst der kleinste Sieg ist der Beweis: Du wächst. Du kämpfst. Du veränderst dich.“
+                <span class="quote-author">— Frank Zimmermann</span>
+            </div>
+        </div>
+
+        <!-- Launch Preparation -->
+        <div class="card">
+            <div class="section-header">
+                <div class="icon-wrapper">🚀</div>
+                <h3>Deine Start-Vorbereitung: Der 4-Schritte-Launch</h3>
+            </div>
+            
+            <ol class="launch-steps">
+                <li>
+                    <h4>Setze deinen Zeitpunkt</h4>
+                    <p class="story-p">Keine Ausreden, kein Verschieben. Suche dir keinen „perfekten“ Tag in der Zukunft, sondern triff jetzt die Entscheidung.</p>
+                </li>
+                <li>
+                    <h4>Zünde die finale Zigarette an</h4>
+                    <p class="story-p">Zünde dir deine allerletzte Zigarette mit 100 % Aufmerksamkeit an. Spüre den heißen Rauch, den stechenden Geschmack und mache dir klar: „Das ist das allerletzte Mal.“</p>
+                </li>
+                <li>
+                    <h4>Mache reinen Tisch</h4>
+                    <p class="story-p">Wirf alle verbleibenden Schachteln, Tabakbeutel, Blättchen, Feuerzeuge und Aschenbecher direkt in den Müll. Schaffe klare Fakten.</p>
+                </li>
+                <li>
+                    <h4>Aktiviere den Schalter</h4>
+                    <p class="story-p">Streife sofort das Gummiband über dein Handgelenk. Ab genau diesem Sekundenschlag bist du ein freier Nichtraucher auf deiner 21-Tage-Transformation.</p>
+                </li>
+            </ol>
+        </div>
+
+        <!-- Switch CTA -->
+        <div class="card cta-card">
+            <h3>SCHALTER UMLEGEN &amp; STARTEN</h3>
+            <p>Für dich, für deine Gesundheit und für dieses wunderbare Wunderwerk, das dich seit deinem ersten Atemzug durchs Leben trägt!</p>
+
+            <button class="btn-switch" id="toggleSwitch" onclick="activateTransformation()">
+                <span id="btnText">Schalter Umlegen</span>
+                <span id="btnIcon">⚡</span>
+            </button>
+            <div class="status-msg" id="statusMsg">✨ DER SCHALTER IST UMGELEGT! DEINE TRANSFORMATION STARTET JETZT.</div>
+        </div>
+
+        <!-- STICKY PROGRESS BAR -->
+        <div class="progress-sticky">
+            <div class="progress-title-row">
+                <span>📋 Deine 21 Tage – Reise durch das Labyrinth</span>
+                <span id="progress-text">0 von 21 Tagen gemeistert (0%)</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+
+        <!-- DYNAMIC ACCORDION DAYS CONTAINER -->
+        <div id="days-container"></div>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="footer-quote">
+                ⚡ Bleib deinem Weg treu – du hast bewiesen, was in dir steckt!
+            </div>
+            <div class="footer-copyright">
+                © <span class="author">Frank Zimmermann</span> | 21-Tage-Rauchfrei-Transformation &bull; <em>Premium Exklusiv</em>
+            </div>
+            <div class="footer-legal">
+                Alle Inhalte sind urheberrechtlich geschützt. Unbefugte Vervielfältigung, Verbreitung oder kommerzielle Nutzung ist ausdrücklich untersagt.
+            </div>
+            <div class="footer-contact">
+                <span>💬 WhatsApp Support</span>
+                <span>✉️ E-Mail Support</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIK -->
+    <script>
+        /* ===================================================
+           1. PAYPAL & FREISCHALTUNGSLOGIK (SPENDEN-GATE)
+           =================================================== */
+        const paypalEmail = "eurodeko@web.de"; 
+
+        function updateAmount(val) {
+            const cleanVal = parseFloat(val).toFixed(2);
+            const formatted = cleanVal.replace('.', ',') + ' €';
+            
+            document.getElementById('amountDisplay').innerText = formatted;
+            
+            // Automatische Rückkehr-URL zu deiner GitHub-Pages-Seite mit Parameter ?donated=true
+            const returnUrl = encodeURIComponent(window.location.origin + window.location.pathname + '?donated=true');
+            
+            // Dynamische PayPal-Zahlungs-URL
+            const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(paypalEmail)}&currency_code=EUR&amount=${cleanVal}&item_name=Unterstuetzung_21_Tage_Rauchfrei_Portal&return=${returnUrl}`;
+            
+            document.getElementById('directPaypalBtn').href = paypalUrl;
+            
+            // Dynamische Danke-Nachricht
+            const thankText = document.getElementById('thankMsg');
+            if (val < 3) thankText.innerText = "Jeder Cent hilft! Danke dir! 🙏";
+            else if (val < 10) thankText.innerText = "Danke für deine Unterstützung! 🚀";
+            else thankText.innerText = "Wow, vielen Dank für dein großes Commitment! 🏆";
+        }
+
+        function checkDonationStatus() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const hasDonatedParam = urlParams.get('donated') === 'true';
+            const hasDonatedStorage = localStorage.getItem('user_has_donated') === 'true';
+
+            if (hasDonatedParam || hasDonatedStorage) {
+                if (hasDonatedParam) {
+                    localStorage.setItem('user_has_donated', 'true');
+                    // Säubert die URL nach erfolgreicher Rückkehr
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+                unlockPortal();
+            } else {
+                lockPortal();
+            }
+        }
+
+        function lockPortal() {
+            const modal = document.getElementById('paymentModal');
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function unlockPortal() {
+            const modal = document.getElementById('paymentModal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function onPaypalClick() {
+            localStorage.setItem('pending_donation', 'true');
+        }
+
+        function unlockContentManually() {
+            localStorage.setItem('user_has_donated', 'true');
+            unlockPortal();
+        }
+
+        function closePaymentModal() {
+            if (localStorage.getItem('user_has_donated') === 'true') {
+                document.getElementById('paymentModal').style.display = 'none';
+            } else {
+                alert("Bitte unterstütze das Projekt, um Zugang zum Portal zu erhalten.");
+            }
+        }
+
+
+        /* ===================================================
+           2. DATA STRUCTURE FOR ALL 21 DAYS
+           =================================================== */
+        const daysData = [
+            {
+                day: 1,
+                title: "Schockiere dein Gehirn",
+                aha: "Jeder Zug flutet deinen Körper mit Milliarden freier Radikale – setze heute ein klares mentales Stopp-Signal!",
+                neuro: "Zigarettenrauch erzeugt massiven oxidativen Stress im Körper. Diese reaktionsfreudigen Sauerstoffmoleküle schädigen Zellen, beschleunigen die Arteriosklerose und versetzen das Gefäßsystem in eine Dauerentzündung. Dein Gehirn hat den Griff zur Zigarette fälschlicherweise als Schutzreflex abgespeichert.",
+                action: "Trage ab heute 21 Tage lang ein elastisches Gummiband am Handgelenk. Jedes Mal, wenn der Impuls zum Rauchen auftaucht, schnippst du es leicht gegen die Haut und sprichst laut oder innerlich: „Nein. Neu. Jetzt.“ Du unterbrichst damit sofort den automatischen Ablauf."
+            },
+            {
+                day: 2,
+                title: "Gewohnheit vs. Sucht",
+                aha: "Rauchen spendet keine echte Entspannung – es beseitigt lediglich den Nikotinmangel, den es selbst erzeugt hat.",
+                neuro: "Nikotin erreicht innerhalb von 7 Sekunden das Gehirn und bindet an nikotinerge Acetylcholin-Rezeptoren. Es greift tief in das vegetative Nervensystem ein. Die Sucht täuscht ein positives Gefühl vor, stellt aber biologisch nur den Normalzustand eines Nichtrauchers für kurze Zeit wieder her.",
+                action: "Ersetze die gewohnte Handbewegung sofort durch eine feste Ersatzhandlung: Trinke bei Verlangen ein großes Glas kaltes Wasser (Tagesziel: 2 Liter), kaue ein Kaugummi oder massiere 30 Sekunden lang deine Fingerkuppen.",
+                quiz: {
+                    question: "Wie schnell gelangt Nikotin ins Gehirn?",
+                    options: ["A. 5–10 Sekunden", "B. 30 Sekunden", "C. 1 Minute", "D. 5 Minuten"],
+                    correct: 0
+                }
+            },
+            {
+                day: 3,
+                title: "Werde Detektiv deiner Muster",
+                aha: "Der empfundene Stress im Alltag wird überwiegend durch den einsetzenden Entzug der letzten Zigarette ausgelöst – nicht durch dein Leben!",
+                neuro: "Eine Sucht ist eine erlernte Gain-of-Function-Erkrankung des Gehirns. Das Dopaminsignal markiert den Kontext (Umfeld, Uhrzeit, Emotionen), in dem die Sucht entstanden ist. Wenn du die Muster erkennst, verliert der Reiz seine unbewusste Macht.",
+                action: "Analysiere deinen Tag präzise und notiere deine Top-5-Trigger-Situationen (z. B. Kaffee am Morgen, Autofahren, Pause mit Kollegen, Stress im Job, Feierabend)."
+            },
+            {
+                day: 4,
+                title: "Wertschätzung & Zellgesundheit",
+                aha: "Dein Körper ist kein Aschenbecher, sondern dein wertvollstes Werkzeug. Behandle ihn heute mit maximaler Wertschätzung.",
+                neuro: "Raucher sterben im Durchschnitt 10 Jahre früher als Nichtraucher. 90 % aller tödlichen Lungenerkrankungen und 9 von 10 Lungenkarzinomen stehen in direktem Zusammenhang mit dem Rauch. Doch sobald der Rauch stoppt, beginnt das Gewebe sofort mit der Regeneration.",
+                action: "Reinige heute bewusst deinen Körper und dein Umfeld: Putze deine Zähne gründlich, wasche den Rauchgeruch aus deiner Kleidung, lüfte deine Räume komplett durch und trinke reichlich frisches Wasser."
+            },
+            {
+                day: 5,
+                title: "Die Biochemie der Ruhe",
+                aha: "Tiefe Atmung und gezielte Reize beruhigen dein Nervensystem blitzschnell – völlig ohne Giftstoffe.",
+                neuro: "Die gefühlte Beruhigung beim Rauchen entsteht durch das unbewusste, tiefe Ein- und Ausatmen. Die 4-7-8-Atemtechnik aktiviert den Parasympathikus und senkt die Herzfrequenz. Kältereize schütten zudem Noradrenalin aus – exakt wie Nikotin, aber vollkommen gesund.",
+                action: "Mache bei jedem Verlangen 10 Durchgänge der 4-7-8-Atmung (4s durch die Nase einatmen, 7s halten, 8s durch den Mund ausatmen).",
+                kickstart: "Beende dein Duschen heute mit 30 Sekunden kaltem Wasser!"
+            },
+            {
+                day: 6,
+                title: "Der finanzielle Hebel",
+                aha: "Rauchen verbrennt nicht nur Geld – es kostet dich deine finanzielle Unabhängigkeit und Freiheit.",
+                neuro: "Bei einem Preis von 10 € pro Schachtel gibst du bei einer Schachtel am Tag monatlich 300 € und im Jahr exakt 3.650 € aus. In 10 Jahren sind das 36.500 € Reingewinn, die du direkt in deine Lebensqualität investieren kannst.",
+                action: "Berechne deine Ausgaben der letzten 5 Jahre. Richte ab heute ein Sparglas oder ein digitales Unterkonto ein und überweise täglich deinen gesparten Schachtelbetrag (10 €) hinein.",
+                quiz: {
+                    question: "Wie viel Geld sparst du in 21 Tagen (10 €/Tag)?",
+                    options: ["A. 84 €", "B. 140 €", "C. 210 €", "D. 250 €"],
+                    correct: 2
+                }
+            },
+            {
+                day: 7,
+                title: "Wochen-Reflexion & Identität",
+                aha: "Du bist kein „Raucher, der verzichtet“, sondern von Tag zu Tag mehr ein freier, kraftvoller Nichtraucher.",
+                neuro: "Echte Veränderung erfordert einen Identitätswechsel. Wenn du dein Selbstbild veränderst, passen sich deine unbewussten Verhaltensmuster im Gehirn automatisch an die neue Identität an.",
+                action: "Stelle dich vor den Spiegel, blicke dir fest in die Augen und sage laut: „Ich werde stärker. Ich habe die volle Kontrolle. Ich bin Nichtraucher.“ Reflektiere deine erste erfolgreiche Woche schriftlich!"
+            },
+            {
+                day: 8,
+                title: "Hinterfrage die Toxine",
+                aha: "Über 4.800 Chemikalien stecken in einer Zigarette – übernimm wieder die volle Hoheit über deine Zellen!",
+                neuro: "Zusatzstoffe wie Ammoniak verändern den pH-Wert des Rauchs, damit das Nikotin noch schneller ins Gehirn schießt. Menthol betäubt die Atemwege, damit der giftige Rauch tiefer inhaliert werden kann. Es handelt sich um ein gezieltes Design zur Maximierung der Abhängigkeit.",
+                action: "Lies dir bewusst die Zutatenliste von Tabakprodukten durch (Arsen, Blei, Formaldehyd, Benzol). Mache dir klar, dass du diesen giftigen Chemikalienmix nie wieder in deinen Körper lässt."
+            },
+            {
+                day: 9,
+                title: "Das 5-Minuten-Zeitfenster",
+                aha: "Jedes Craving ist nur eine Welle – nach wenigen Minuten flacht der Druck von ganz alleine wieder ab.",
+                neuro: "Ein akuter Suchtdruck erreicht sein neurobiologisches Maximum nach etwa 3 bis 5 Minuten und klingt danach unweigerlich ab. Wenn du dieses kurze Fenster überbrückst, ist die biochemische Welle gebrochen.",
+                action: "Stelle bei Verlangen sofort die Stoppuhr auf deinem Smartphone auf genau 5 Minuten. Beobachte das Gefühl gelassen und spüre, wie der Druck nach Ablauf der Zeit nachlässt.",
+                quiz: {
+                    question: "Wie lange dauert ein Craving im Maximum?",
+                    options: ["A. 1–2 Minuten", "B. 5–10 Minuten", "C. 20–30 Minuten", "D. 1 Stunde"],
+                    correct: 1
+                }
+            },
+            {
+                day: 10,
+                title: "Neuroplastizität & Mentales Training",
+                aha: "Deine Gedanken formen dein Gehirn – visualisiere dich als freien, starken Nichtraucher.",
+                neuro: "Das Gehirn unterscheidet in der neuronalen Aktivierung kaum zwischen einer real erlebten und einer intensiv vorgestellten Erfahrung. Lebhafte mentale Bilder stärken die neuen Synapsenverbindungen für deine rauchfreie Zukunft.",
+                action: "Schließe für 5 Minuten die Augen und male dir dein rauchfreies Leben in allen Details aus: Wie tief und frei du atmest, wie gut du riechst und wie viel Energie durch deinen Körper fließt."
+            },
+            {
+                day: 11,
+                title: "Die Notfall-Strategie",
+                aha: "Echte Stärke zeigt sich in herausfordernden Momenten – deine Notfallkarte gibt dir sofort die Kontrolle zurück.",
+                neuro: "In Stresssituationen schaltet das Gehirn auf automatisierte Reflexe um. Das etablierte Muster der 4-A-Methode verhindert, dass das Suchtzentrum das Ruder übernimmt.",
+                action: "Schreibe dir eine Notfallkarte für deine Brieftasche:<br>1. AUFSCHIEBEN: 10 Sekunden tief durchatmen.<br>2. AUSWEICHEN: Vorausschauend alte Muster durchbrechen.<br>3. ABHAUEN: Die Trigger-Situation kurz verlassen.<br>4. ABLENKEN: Wasser trinken, Zähne putzen oder bewegen."
+            },
+            {
+                day: 12,
+                title: "Kontext & Umfeld",
+                aha: "Verändere deinen Kontext, und die Sucht verliert ihre gewohnte Umgebung!",
+                neuro: "Untersuchungen zum Suchtverhalten belegen: Wenn der gewohnte Kontext und das räumliche Umfeld verändert werden, sinkt das Suchtverlangen drastisch, weil die äußeren Auslöser fehlen.",
+                action: "Mache reinen Tisch in deinem Umfeld (Aschenbecher, Feuerzeuge entfernen) und erzähle heute mindestens 3 wichtigen Personen von deinem Entschluss, um dir soziale Verbindlichkeit zu schaffen.",
+                quiz: {
+                    question: "Wie nennt man das Verlangen nach Nikotin?",
+                    options: ["A. Craving / Suchtdruck", "B. Flash", "C. Entzugssyndrom", "D. Hyperventilation"],
+                    correct: 0
+                }
+            },
+            {
+                day: 13,
+                title: "Progressive Muskelrelaxation (PMR)",
+                aha: "Körperliche Entspannung baut psychischen Stress sofort ab – nutze die Kraft gezielter Muskelentspannung.",
+                neuro: "Körperliche und mentale Anspannung greifen direkt ineinander. Über das Prinzip der Muskelentspannung nach Jacobson (PMR) wird die Ausschüttung von Stresshormonen (Cortisol) gestoppt und das Nervensystem beruhigt.",
+                action: "Nimm dir 10 Minuten Zeit für die PMR-Übung: Spanne nacheinander Hände, Gesicht, Schultern, Bauch und Beine für jeweils 5 Sekunden fest an und lasse danach schlagartig für 10 Sekunden locker."
+            },
+            {
+                day: 14,
+                title: "Halbzeit & Die Rückfall-Falle",
+                aha: "Du hast 14 Tage geschafft! Halte die eiserne Regel ein: Es gibt biologisch niemals „nur eine einzige Zigarette“.",
+                neuro: "Ein einziger Zug flutet das Belohnungssystem erneut mit Nikotin und reaktiviert die ruhenden Rezeptoren im Gehirn schlagartig. Die biochemische Kettenreaktion würde sofort von vorne beginnen.",
+                action: "Reflektiere deine schwersten Momente der ersten zwei Wochen. Feiere deine Halbzeit, bleibe wachsam und festige deinen eisernen Grundsatz: Kein einziger Zug mehr!"
+            },
+            {
+                day: 15,
+                title: "Automatismen entkoppeln",
+                aha: "Durchbrich deine alten Routinen und dein Gehirn bildet im Eiltempo neue, rauchfreie Bahnen.",
+                neuro: "Bereits 20 Minuten nach der letzten Zigarette sinken Puls und Blutdruck auf Normalwerte. Nach 12 Stunden normalisiert sich der Kohlenmonoxid-Spiegel im Blut vollkommen.",
+                action: "Verändere gezielt ein altes Morgenritual: Trinke deinen Kaffee heute an einem anderen Platz oder trinke erst ein Glas kaltes Wasser und mache 10 Atemzüge, bevor du deine Morgenroutine startest.",
+                quiz: {
+                    question: "Was passiert bereits nach 20 Minuten?",
+                    options: ["A. Lunge vollständig gereinigt", "B. Puls & Blutdruck normalisieren sich", "C. Geruchssinn verfünffacht sich", "D. Krebsrisiko sinkt auf Null"],
+                    correct: 1
+                }
+            },
+            {
+                day: 16,
+                title: "Kognitive Unterbrechung (CBT)",
+                aha: "Unterbrich den automatischen Gedanken mit einem klaren mentalen Schnitt!",
+                neuro: "Das Unbewusste bereitet Entscheidungen oft einige Sekunden vor, bevor sie uns bewusst werden. Ein klares, lautes Stopp-Signal unterbricht die unbewusste Impulsschleife der kognitiven Verhaltenstherapie (CBT).",
+                action: "Sobald der Gedanke an eine Zigarette auftaucht, rufe sofort innerlich oder laut „STOPP!“ und wechsle augenblicklich deine Körperposition oder die Tätigkeit."
+            },
+            {
+                day: 17,
+                title: "Die 4 Phasen der Veränderung",
+                aha: "Veränderung braucht Zeit – du befindest dich jetzt kurz vor der automatischen Gewohnheit!",
+                neuro: "Verhaltensänderungen durchlaufen vier Stufen: Unbewusste Inkompetenz ➔ Bewusste Inkompetenz ➔ Bewusste Kompetenz ➔ Unbewusste Kompetenz. Nach etwa 21 Tagen täglicher Wiederholung wird das neue Verhalten zur automatischen Normalität.",
+                action: "Erkenne an, dass das neue Verhalten von Tag zu Tag leichter fällt. Feiere deinen stetigen Fortschritt von der bewussten zur unbewussten Nichtraucher-Kompetenz."
+            },
+            {
+                day: 18,
+                title: "Physische Entkopplung",
+                aha: "Leite die gewohnte Handbewegung um, bevor der Automatismus die Kontrolle übernimmt.",
+                neuro: "Die Habit-Reversal-Methode (Entkopplung) nutzt die winzige Zeitverzögerung in der Handlungskette. Wird die Handbewegung kurz vor dem Gesicht umgeleitet, bricht der unbewusste Reflex zusammen.",
+                action: "Wann immer deine Hand unbewusst zur Tasche oder zum Mund wandert, leite sie bewusst um: Fasse dir stattdessen ans Ohr, greife nach deinem Wasserglas oder strecke deinen Arm.",
+                quiz: {
+                    question: "Wie heißt die Methode zur Umleitung von Mustern?",
+                    options: ["A. Entkopplungsmethode / Habit Reversal", "B. Kognitive Isolation", "C. Achtsamkeitstraining", "D. Stimulus-Resektion"],
+                    correct: 0
+                }
+            },
+            {
+                day: 19,
+                title: "Die Heilungs-Zeitachse",
+                aha: "Spüre die körperliche Erneuerung – deine Lunge und deine Sinne regenerieren sich täglich!",
+                neuro: "Bereits nach 2 bis 3 Tagen regenerieren sich die Nervenenden für Geruch und Geschmack. Nach 3 Monaten hat sich deine Lungenkapazität um bis zu 30 % erhöht.",
+                action: "Schreibe alle positiven Veränderungen auf, die du bereits spürst: tieferes Atmen, mehr Ausdauer, besserer Geschmack, gespartes Geld und ein frisches Auftreten."
+            },
+            {
+                day: 20,
+                title: "Glaubenssätze auflösen",
+                aha: "Durchschaue die alten Illusionen – Rauchen war nie ein Freund, sondern eine Fessel.",
+                neuro: "Die psychische Abhängigkeit stützt sich auf unbewusste Mythen („Rauchen entspannt mich“). Wenn du diese Glaubenssätze entlarvst, löst sich das Gefühl von Verzicht vollständig auf.",
+                action: "Blicke auf deine Notizen von Tag 3 zurück. Vergleiche deine damaligen Gedanken mit deiner heutigen Einstellung. Erkennst du, wie frei dein Denken bereits geworden ist?"
+            },
+            {
+                day: 21,
+                title: "Finale Transformation",
+                aha: "Du hast es geschafft! Du hast deine neuronalen Pfade neu verdrahtet – du bist ein freier Nichtraucher!",
+                neuro: "Nach 21 Tagen konsequenter Umprogrammierung sind neue synaptische Netzwerke verankert. Das Suchtgedächtnis ist inaktiv. Die biologische Schranke ist überwunden, solange du dem ersten Zug nie wieder eine Chance gibst.",
+                action: "Zerschneide symbolisch eine leere Zigarettenschachtel. Belohne dich mit den gesparten 210 € der letzten 21 Tage für etwas, das dir echte Freude bereitet!",
+                quiz: {
+                    question: "Was ist die wichtigste Zutat für deine Transformation?",
+                    options: ["A. Perfekte Methode", "B. Genetik", "C. Glaube an dich & tägliche Praxis", "D. Reine Glückssache"],
+                    correct: 2
+                }
+            }
+        ];
+
+        /* ===================================================
+           3. PORTAL STATE & LOGIK
+           =================================================== */
+        let completedDays = JSON.parse(localStorage.getItem('transformation_completed')) || [];
+
+        function activateTransformation() {
+            const btn = document.getElementById('toggleSwitch');
+            const msg = document.getElementById('statusMsg');
+            const icon = document.getElementById('btnIcon');
+            const text = document.getElementById('btnText');
+
+            btn.classList.add('active');
+            btn.style.transform = "scale(1.05)";
+            icon.textContent = "✅";
+            text.textContent = "SYSTEM AKTIVIERT";
+            msg.classList.add('show');
+        }
+
+        function toggleAccordion(dayNum) {
+            const card = document.getElementById(`day-card-${dayNum}`);
+            if (card) {
+                card.classList.toggle('open');
+            }
+        }
+
+        function renderDays() {
+            const container = document.getElementById('days-container');
+            container.innerHTML = '';
+
+            daysData.forEach(item => {
+                const isCompleted = completedDays.includes(item.day);
+                
+                let quizHtml = '';
+                if (item.quiz) {
+                    quizHtml = `
+                        <div class="quiz-box">
+                            <div class="quiz-title">📢 QUIZ – ⏱️ ${item.quiz.question}</div>
+                            <div class="quiz-options">
+                                ${item.quiz.options.map((opt, idx) => `
+                                    <button class="quiz-btn" onclick="checkQuiz(${item.day}, ${idx}, ${item.quiz.correct}, this, event)">${opt}</button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                let kickstartHtml = '';
+                if (item.kickstart) {
+                    kickstartHtml = `
+                        <div class="kickstart-box">
+                            <h5>🧊 Bonus-Tipp:</h5>
+                            <p>${item.kickstart}</p>
+                        </div>
+                    `;
+                }
+
+                const card = document.createElement('div');
+                card.className = `card ${isCompleted ? 'completed' : ''}`;
+                card.id = `day-card-${item.day}`;
+                
+                card.innerHTML = `
+                    <div class="day-header" onclick="toggleAccordion(${item.day})">
+                        <div class="day-header-left">
+                            <div class="day-badge">TAG ${item.day < 10 ? '0' + item.day : item.day}</div>
+                            <div class="day-title-preview">${item.title}</div>
+                        </div>
+                        <div class="day-header-right">
+                            <span class="phase-tag">Phase ${Math.ceil(item.day / 7)}</span>
+                            <div class="chevron-icon">▼</div>
+                        </div>
+                    </div>
+                    
+                    <div class="day-content">
+                        <div class="highlight-box">
+                            📌 DEIN AHA-MOMENT<br>${item.aha.replace(/\n/g, '<br>')}
+                        </div>
+
+                        <div class="neuro-box">
+                            <h5>🔬 NEUROBIOLOGISCHE TIEFE</h5>
+                            <p>${item.neuro}</p>
+                        </div>
+
+                        <div class="action-box">
+                            <h5>💡 DEINE HEUTIGE ENTDECKUNG</h5>
+                            <p>${item.action}</p>
+                        </div>
+
+                        ${kickstartHtml}
+                        ${quizHtml}
+
+                        <button class="btn-complete ${isCompleted ? 'is-done' : ''}" onclick="toggleDay(${item.day}, event)">
+                            ${isCompleted ? '✓ Als abgeschlossen markiert' : '✓ Als abgeschlossen markieren'}
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            updateProgress();
+        }
+
+        function toggleDay(dayNum, event) {
+            if (event) event.stopPropagation();
+            
+            if (completedDays.includes(dayNum)) {
+                completedDays = completedDays.filter(d => d !== dayNum);
+            } else {
+                completedDays.push(dayNum);
+            }
+            localStorage.setItem('transformation_completed', JSON.stringify(completedDays));
+            
+            const card = document.getElementById(`day-card-${dayNum}`);
+            const btn = card.querySelector('.btn-complete');
+            
+            if (completedDays.includes(dayNum)) {
+                card.classList.add('completed');
+                btn.classList.add('is-done');
+                btn.innerHTML = '✓ Als abgeschlossen markiert';
+            } else {
+                card.classList.remove('completed');
+                btn.classList.remove('is-done');
+                btn.innerHTML = '✓ Als abgeschlossen markieren';
+            }
+            
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const count = completedDays.length;
+            const percent = Math.round((count / 21) * 100);
+            
+            document.getElementById('progress-fill').style.width = `${percent}%`;
+            document.getElementById('progress-text').textContent = `${count} von 21 Tagen gemeistert (${percent}%)`;
+        }
+
+        function checkQuiz(dayNum, selectedIdx, correctIdx, btn, event) {
+            if (event) event.stopPropagation();
+            
+            const parent = btn.parentElement;
+            const buttons = parent.querySelectorAll('.quiz-btn');
+            
+            buttons.forEach((b, idx) => {
+                b.classList.remove('correct', 'wrong');
+                if (idx === correctIdx) {
+                    b.classList.add('correct');
+                } else if (idx === selectedIdx) {
+                    b.classList.add('wrong');
+                }
+            });
+        }
+
+        /* ===================================================
+           4. INITIALISIERUNG
+           =================================================== */
+        document.addEventListener('DOMContentLoaded', () => {
+            const slider = document.getElementById('paymentRange');
+            if (slider) {
+                updateAmount(slider.value);
+            }
+            checkDonationStatus();
+            renderDays();
+        });
+    </script>
+</body>
+</html>
